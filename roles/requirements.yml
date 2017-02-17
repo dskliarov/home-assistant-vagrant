@@ -1,0 +1,3 @@
+---
+- src: https://github.com/dskliarov/home-assistant-ansible.git
+  scm: git

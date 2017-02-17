@@ -1,0 +1,45 @@
+---
+- name: Install Home Assistant
+  hosts: all
+  become: yes
+  become_user: root
+
+  pre_tasks:
+    - yum:
+        name: epel-release
+        state: present
+
+    - yum:
+        name: python34-setuptools
+        state: present
+
+    - yum:
+        name: python34-devel.x86_64
+        state: present
+
+    - name: install pip
+      command: easy_install-3.4 pip
+
+    - name: Add multiple repositories into the same file (1/2)
+      yum_repository:
+        name: dnf_repo
+        description: EPEL YUM repo
+        file: dnf-stack-el7
+        baseurl: https://copr-be.cloud.fedoraproject.org/results/@rpm-software-management/dnf-stack-el7/epel-7-\$basearch/
+        gpgcheck: yes
+        skip_if_unavailable: True
+        gpgkey: https://copr-be.cloud.fedoraproject.org/results/@rpm-software-management/dnf-stack-el7/pubkey.gpg
+        enabled: yes
+
+    - name: install dnf
+      yum:
+        name: dnf
+        state: present
+
+    - systemd:
+        name: firewalld
+        state: started
+        enabled: True
+
+  roles:
+      - home-assistant-ansible

@@ -1,0 +1,4 @@
+.vagrant
+roles/home-assistant-ansible
+roles/home-assistant-ansible/*
+*.retry
